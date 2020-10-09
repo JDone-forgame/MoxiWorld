@@ -101,57 +101,57 @@ let game = class game {
     }
     /**
      * 获取用户信息
-     * @route POST /game/local/getinfo
+     * @route POST /game/local/getInfo
      * @group local - 本地接口
      * @param {string} gameId.query.required - id
      * @param {string} token.query.required - token
      * @returns {code:number} 0 - 返回内容
      */
-    getinfo(param) {
+    getInfo(param) {
         return gameRPC_1.gameRPC.inst.getInfo(param.gameId, param.token);
     }
     ;
     /**
      * 设置用户信息
-     * @route POST /game/local/setinfo
+     * @route POST /game/local/setInfo
      * @group local - 本地接口
      * @param {string} gameId.query.required - id
      * @param {string} token.query.required - token
      * @param {object} gameInfo.query.required - 设置信息
      * @returns {code:number} 0 - 返回内容
      */
-    setinfo(param) {
+    setInfo(param) {
         return gameRPC_1.gameRPC.inst.setInfo(param.gameId, param.token, param.gameInfo);
     }
     ;
     /**
     * 设置用户信息增量
-    * @route POST /game/local/setsingleinfo
+    * @route POST /game/local/setSingleInfo
     * @group local - 本地接口
     * @param {string} gameId.query.required - 名字
     * @param {string} token.query.required - token
     * @param {object} gameInfo.query.required - 设置信息
     * @returns {code:number} 0 - 返回内容
     */
-    setsingleinfo(param) {
+    setSingleInfo(param) {
         return gameRPC_1.gameRPC.inst.setSingleInfo(param.gameId, param.token, param.gameInfo);
     }
     ;
     /**
     * 加载邮件
-    * @route POST /game/local/loadmail
+    * @route POST /game/local/loadMail
     * @group local - 本地接口
     * @param {string} gameId.query.required - id
     * @param {string} token.query.required - token
     * @param {object} gameInfo.query.required - 设置信息
     * @returns {code:number} 0 - 返回内容
     */
-    loadmail(param) {
+    loadMail(param) {
         return gameRPC_1.gameRPC.inst.loadMails(param.gameId, param.token);
     }
     /**
      * 发送邮件
-     * @route POST /game/local/givemail
+     * @route POST /game/local/giveMail
      * @group local - 本地接口
      * @param {string} gameId.query.required - id
      * @param {string} token.query.required - token
@@ -159,13 +159,13 @@ let game = class game {
      * @param {string} message.query.required - 消息内容
      * @returns {code:number} 0 - 返回内容
      */
-    givemail(param) {
+    giveMail(param) {
         return gameRPC_1.gameRPC.inst.giveMail(param.gameId, param.token, param.sendId, param.message);
     }
     ;
     /**
     * 操作邮件
-    * @route POST /game/local/optmail
+    * @route POST /game/local/optMail
     * @group local - 本地接口
     * @param {string} gameId.query.required - id
     * @param {string} token.query.required - token
@@ -174,20 +174,20 @@ let game = class game {
     * @param {number} state.query.required - 状态码 type是state时生效
     * @returns {code:number} 0 - 返回内容
     */
-    optmail(param) {
+    optMail(param) {
         return gameRPC_1.gameRPC.inst.optMail(param.gameId, param.token, param.mailId, param.type, parseInt(param.state));
     }
     ;
     /**
      * 增加每周积分
-     * @route POST /game/local/addweeklyscore
+     * @route POST /game/local/addWeeklyScore
      * @group local - 本地接口
      * @param {string} gameId.query.required - id
      * @param {string} token.query.required - token
      * @param {number} score.query.required - 积分
      * @returns {code:number} 0 - 返回内容
      */
-    addweeklyscore(param) {
+    addWeeklyScore(param) {
         return __awaiter(this, void 0, void 0, function* () {
             return gameRPC_1.gameRPC.inst.addWeeklyScore(param.gameId, param.token, param.score);
         });
@@ -195,20 +195,20 @@ let game = class game {
     /**
      * 开始游戏
      * @date 2020-09-24
-     * @route POST /game/local/startgame
+     * @route POST /game/local/startGame
      * @group game - 活动管理器
      * @param {string} gameId.query.required - 玩家id
      * @param {string} token.query.required - token
      * @returns {code:number} 0 - 操作结果
      * @returns {singleGameLock:string} string - 返回的密钥
      */
-    startgame(param) {
+    startGame(param) {
         return gameRPC_1.gameRPC.inst.startGame(param.gameId, param.token);
     }
     /**
      * 结算游戏
      * @date 2020-09-24
-     * @route POST /game/local/endgame
+     * @route POST /game/local/endGame
      * @group game - 活动管理器
      * @param {string} gameId.query.required - 玩家id
      * @param {string} token.query.required - token
@@ -219,7 +219,7 @@ let game = class game {
      * @returns {code:number} 0 - 操作结果
      * @returns {highestScore:number} number - 历史最高分数
      */
-    endgame(param) {
+    endGame(param) {
         return gameRPC_1.gameRPC.inst.endGame(param.gameId, param.token, param.score, param.singleGameLock);
     }
     /**
@@ -232,7 +232,7 @@ let game = class game {
      * @param {string} itemId.query.required - itemId
      * @returns { code: number} 0 - 操作结果
      */
-    queryitemcount(param) {
+    queryItemCount(param) {
         return gameRPC_1.gameRPC.inst.queryItemCount(param.gameId, param.token, param.itemId);
     }
 };
@@ -248,31 +248,31 @@ __decorate([
     mx_webserve_1.WebRouteModule.route(),
     mx_webserve_1.WebRouteModule.paramRequired("gameId", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("token", "string", true)
-], game.prototype, "getinfo", null);
+], game.prototype, "getInfo", null);
 __decorate([
     mx_webserve_1.WebRouteModule.route(),
     mx_webserve_1.WebRouteModule.paramRequired("gameId", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("token", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("gameInfo", "object", true)
-], game.prototype, "setinfo", null);
+], game.prototype, "setInfo", null);
 __decorate([
     mx_webserve_1.WebRouteModule.route(),
     mx_webserve_1.WebRouteModule.paramRequired("gameId", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("token", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("gameInfo", "object", true)
-], game.prototype, "setsingleinfo", null);
+], game.prototype, "setSingleInfo", null);
 __decorate([
     mx_webserve_1.WebRouteModule.route(),
     mx_webserve_1.WebRouteModule.paramRequired("gameId", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("token", "string", true)
-], game.prototype, "loadmail", null);
+], game.prototype, "loadMail", null);
 __decorate([
     mx_webserve_1.WebRouteModule.route(),
     mx_webserve_1.WebRouteModule.paramRequired("gameId", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("token", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("sendId", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("message", "string", true)
-], game.prototype, "givemail", null);
+], game.prototype, "giveMail", null);
 __decorate([
     mx_webserve_1.WebRouteModule.route(),
     mx_webserve_1.WebRouteModule.paramRequired("gameId", "string", true),
@@ -280,31 +280,31 @@ __decorate([
     mx_webserve_1.WebRouteModule.paramRequired("mailId", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("type", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("state", "number", true)
-], game.prototype, "optmail", null);
+], game.prototype, "optMail", null);
 __decorate([
     mx_webserve_1.WebRouteModule.route(),
     mx_webserve_1.WebRouteModule.paramRequired("gameId", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("token", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("score", "number", true)
-], game.prototype, "addweeklyscore", null);
+], game.prototype, "addWeeklyScore", null);
 __decorate([
     mx_webserve_1.WebRouteModule.route(),
     mx_webserve_1.WebRouteModule.paramRequired("gameId", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("token", "string", true)
-], game.prototype, "startgame", null);
+], game.prototype, "startGame", null);
 __decorate([
     mx_webserve_1.WebRouteModule.route(),
     mx_webserve_1.WebRouteModule.paramRequired("gameId", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("token", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("score", "number", true),
     mx_webserve_1.WebRouteModule.paramRequired("singleGameLock", "string", true)
-], game.prototype, "endgame", null);
+], game.prototype, "endGame", null);
 __decorate([
     mx_webserve_1.WebRouteModule.route(),
     mx_webserve_1.WebRouteModule.paramRequired("gameId", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("token", "string", true),
     mx_webserve_1.WebRouteModule.paramRequired("itemId", "string", true)
-], game.prototype, "queryitemcount", null);
+], game.prototype, "queryItemCount", null);
 game = __decorate([
     mx_webserve_1.WebRouteModule.class(module)
 ], game);

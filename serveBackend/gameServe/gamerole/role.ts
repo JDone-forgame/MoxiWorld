@@ -1,7 +1,7 @@
 import { createHash } from "crypto";
 import { CacheMoudle, MongodbMoudle, ReHash } from "mx-database";
 import { LocalDate } from "mx-tool";
-import { DBDefine, ErrorCode } from "../../../defines/define";
+import { DBDefine, ErrorCode, ifItemInfo } from "../../../defines/define";
 import { LoggerInstance } from "../../../lib/logger";
 
 export class UnitRole {
@@ -17,6 +17,7 @@ export class UnitRole {
     mailInfos!: ifMailInfo[];
     newMailIds: string[] = [];
 
+    // 微信认证后的信息
     authState: 'authed' | 'timeout' = 'authed';
 
     // 现在并没有读表操作，所以暂定游戏次数的itemId
@@ -35,13 +36,16 @@ export class UnitRole {
     get openId(): string {
         return this.dbInfo.get('openId') || '';
     };
+
     get unionId(): string {
         return this.dbInfo.get('unionId') || '';
     }
+
     // 玩家id 一个玩家id可能对应多个gameId
     get uid(): string {
         return this.dbInfo.get('uid');
-    };
+    }
+
     // session_key
     get session_key(): string {
         return this.dbInfo.get('session_key') || '';
@@ -80,7 +84,7 @@ export class UnitRole {
         return this.dbInfo.force_save();
     }
 
-    // 获取位置？
+    // 获取玩家位置
     getLocation() {
         let platform = this.dbInfo.get('platform')
         if (!platform) return undefined;
@@ -467,6 +471,80 @@ export class UnitRole {
 
     }
 
+    // 将指定格式字符串转换成物品列表
+    // param itemListString 格式：物品id1:数量1|物品id2:数量2|....
+    convertItemStringToList(itemListString: string): Array<ifItemInfo> {
+        let itemList: Array<ifItemInfo> = [];
+        if (!itemListString || itemListString === "") {
+            return itemList;
+        }    
+
+        let stringList: Array<string> = itemListString.split("|");
+        if (stringList && stringList.length > 0) {
+            for (let i = 0; i < stringList.length; ++i) {
+                let itemString = stringList[i];
+                let itemPair: Array<string> = itemString.split(",");
+                if (!itemPair || itemPair.length !== 2) {
+                    continue;
+                }
+
+                let itemInfo: ifItemInfo = {
+                    itemId: itemPair[0],
+                    count: parseInt(itemPair[1])
+                }
+    
+                // 物品数量必须大于0
+                if (itemInfo.count <= 0) {
+                    continue;
+                }
+    
+                itemList.push(itemInfo);
+            }        
+        }
+
+        return itemList;
+    }
+
+    // 检查背包中是否有足够的物品
+    OwnItems(items: Array<ifItemInfo>): boolean {
+        if (!items || items.length <= 0) {
+            return true;
+        }
+
+        for (let i = 0; i < items.length; ++i) {
+            let itemInfo = items[i];
+            let ownItemCount = this.getItemCount(itemInfo.itemId);
+            if (itemInfo.count > ownItemCount) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // 消耗指定的物品
+    UseItems(items: Array<ifItemInfo>): boolean {
+        if (!items || items.length <= 0) {
+            return true;
+        }
+
+        // 先判断是否有足够的物品
+        if (!this.OwnItems(items)) {
+            return false;
+        }
+
+        // 使用物品
+        for (let i = 0; i < items.length; ++i) {
+            let itemInfo = items[i];
+            let ownItemCount = this.getItemCount(itemInfo.itemId);
+            if (itemInfo.count <= ownItemCount) {
+                this.updateItemCount(itemInfo.itemId, ownItemCount - itemInfo.count);
+            }
+        }
+
+        return true;
+    }
+
 }
 
 MongodbMoudle.regist_colltion(DBDefine.db, DBDefine.col_role, ["uid_1", "openId_1"]);
@@ -492,6 +570,13 @@ function isWeekly(timeA: string | number, timeB: string | number) {
 
     return true;
 
+}
+
+//是否是同一天
+function isSameDay(timeStampA: number, timeStampB: number): boolean {
+    let dateA = new Date(timeStampA);
+    let dateB = new Date(timeStampB);
+    return (dateA.setHours(0, 0, 0, 0) == dateB.setHours(0, 0, 0, 0));
 }
 
 // 邮件接口

@@ -110,7 +110,7 @@ class game {
 
    /**
     * 获取用户信息
-    * @route POST /game/local/getinfo
+    * @route POST /game/local/getInfo
     * @group local - 本地接口
     * @param {string} gameId.query.required - id
     * @param {string} token.query.required - token
@@ -119,13 +119,13 @@ class game {
    @WebRouteModule.route()
    @WebRouteModule.paramRequired("gameId", "string", true)
    @WebRouteModule.paramRequired("token", "string", true)
-   getinfo(param: { [key: string]: string }) {
+   getInfo(param: { [key: string]: string }) {
        return gameRPC.inst.getInfo(param.gameId, param.token)
    };
 
    /**
     * 设置用户信息
-    * @route POST /game/local/setinfo
+    * @route POST /game/local/setInfo
     * @group local - 本地接口
     * @param {string} gameId.query.required - id
     * @param {string} token.query.required - token
@@ -136,13 +136,13 @@ class game {
    @WebRouteModule.paramRequired("gameId", "string", true)
    @WebRouteModule.paramRequired("token", "string", true)
    @WebRouteModule.paramRequired("gameInfo", "object", true)
-   setinfo(param: { [key: string]: string }) {
+   setInfo(param: { [key: string]: string }) {
        return gameRPC.inst.setInfo(param.gameId, param.token, param.gameInfo)
    };
 
    /**
    * 设置用户信息增量
-   * @route POST /game/local/setsingleinfo
+   * @route POST /game/local/setSingleInfo
    * @group local - 本地接口
    * @param {string} gameId.query.required - 名字
    * @param {string} token.query.required - token
@@ -153,13 +153,13 @@ class game {
    @WebRouteModule.paramRequired("gameId", "string", true)
    @WebRouteModule.paramRequired("token", "string", true)
    @WebRouteModule.paramRequired("gameInfo", "object", true)
-   setsingleinfo(param: { [key: string]: string }) {
+   setSingleInfo(param: { [key: string]: string }) {
        return gameRPC.inst.setSingleInfo(param.gameId, param.token, param.gameInfo)
    };
 
    /**
    * 加载邮件
-   * @route POST /game/local/loadmail
+   * @route POST /game/local/loadMail
    * @group local - 本地接口
    * @param {string} gameId.query.required - id
    * @param {string} token.query.required - token
@@ -169,13 +169,13 @@ class game {
    @WebRouteModule.route()
    @WebRouteModule.paramRequired("gameId", "string", true)
    @WebRouteModule.paramRequired("token", "string", true)
-   loadmail(param: { [key: string]: any }) {
+   loadMail(param: { [key: string]: any }) {
        return gameRPC.inst.loadMails(param.gameId, param.token);
    }
 
    /**
     * 发送邮件
-    * @route POST /game/local/givemail
+    * @route POST /game/local/giveMail
     * @group local - 本地接口
     * @param {string} gameId.query.required - id
     * @param {string} token.query.required - token
@@ -188,14 +188,14 @@ class game {
    @WebRouteModule.paramRequired("token", "string", true)
    @WebRouteModule.paramRequired("sendId", "string", true)
    @WebRouteModule.paramRequired("message", "string", true)
-   givemail(param: { [key: string]: string }) {
+   giveMail(param: { [key: string]: string }) {
        return gameRPC.inst.giveMail(param.gameId, param.token, param.sendId, param.message);
    };
 
 
    /**
    * 操作邮件
-   * @route POST /game/local/optmail
+   * @route POST /game/local/optMail
    * @group local - 本地接口
    * @param {string} gameId.query.required - id
    * @param {string} token.query.required - token
@@ -210,13 +210,13 @@ class game {
    @WebRouteModule.paramRequired("mailId", "string", true)
    @WebRouteModule.paramRequired("type", "string", true)
    @WebRouteModule.paramRequired("state", "number", true)
-   optmail(param: { [key: string]: any }) {
+   optMail(param: { [key: string]: any }) {
        return gameRPC.inst.optMail(param.gameId, param.token, param.mailId, param.type, parseInt(param.state));
    };
 
    /**
     * 增加每周积分
-    * @route POST /game/local/addweeklyscore
+    * @route POST /game/local/addWeeklyScore
     * @group local - 本地接口
     * @param {string} gameId.query.required - id
     * @param {string} token.query.required - token
@@ -227,14 +227,14 @@ class game {
    @WebRouteModule.paramRequired("gameId", "string", true)
    @WebRouteModule.paramRequired("token", "string", true)
    @WebRouteModule.paramRequired("score", "number", true)
-   async addweeklyscore(param: { [key: string]: any }) {
+   async addWeeklyScore(param: { [key: string]: any }) {
        return gameRPC.inst.addWeeklyScore(param.gameId, param.token, param.score);
    }
 
    /**
     * 开始游戏
     * @date 2020-09-24
-    * @route POST /game/local/startgame
+    * @route POST /game/local/startGame
     * @group game - 活动管理器
     * @param {string} gameId.query.required - 玩家id
     * @param {string} token.query.required - token
@@ -244,14 +244,14 @@ class game {
    @WebRouteModule.route()
    @WebRouteModule.paramRequired("gameId", "string", true)
    @WebRouteModule.paramRequired("token", "string", true)
-   startgame(param: { [key: string]: any }) {
+   startGame(param: { [key: string]: any }) {
        return gameRPC.inst.startGame(param.gameId, param.token)
    }
 
    /**
     * 结算游戏
     * @date 2020-09-24
-    * @route POST /game/local/endgame
+    * @route POST /game/local/endGame
     * @group game - 活动管理器
     * @param {string} gameId.query.required - 玩家id
     * @param {string} token.query.required - token
@@ -267,7 +267,7 @@ class game {
    @WebRouteModule.paramRequired("token", "string", true)
    @WebRouteModule.paramRequired("score", "number", true)
    @WebRouteModule.paramRequired("singleGameLock", "string", true)
-   endgame(param: { [key: string]: any }) {
+   endGame(param: { [key: string]: any }) {
        return gameRPC.inst.endGame(param.gameId, param.token, param.score, param.singleGameLock);
    }
 
@@ -285,7 +285,7 @@ class game {
    @WebRouteModule.paramRequired("gameId", "string", true)
    @WebRouteModule.paramRequired("token", "string", true)
    @WebRouteModule.paramRequired("itemId", "string", true)
-   queryitemcount(param: { [key: string]: any }) {
+   queryItemCount(param: { [key: string]: any }) {
        return gameRPC.inst.queryItemCount(param.gameId, param.token, param.itemId);
    }
 
