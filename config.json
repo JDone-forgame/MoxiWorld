@@ -1,0 +1,41 @@
+{
+    "id": "E008",
+    "web": {
+        "port": 11080
+    },
+    "db": {
+        "database":"MoxiWorld",
+        "host": "10.0.0.10",
+        "port": 27017
+    },
+    "appKey": "567664f950eb4967fe870b2a0ebe2ca6",
+    "rank": {
+        "url": "http://127.0.0.1:11071/",
+        "rankinfo": "static/local/rankinfo",
+        "addrank": "static/local/add",
+        "getrank4": "static/local/ranklist4",
+        "ranklist": "static/local/ranklist",
+        "getrange": "staic/local/range",
+        "rankaward": "static/local/rankaward",
+        "top3award": "static/local/top3award",
+        "gameroleinfo": "/static/local/gameroleinfo"
+    },
+    "Swagger": true,
+    "account":{
+    		"url":"http://platform.moxigame.cn/account",
+    		"tokenlogin": "/login/authLogin"
+        },   
+    "platform":"common",
+    "logMgr": {
+        "platform": "tga",
+        "url": "http://taobao.moxigame.cn/logkit/api/logger",
+        "projectid": "6",
+        "path": "./logs/data"
+    },
+    "packs": {
+        "A_10408_R_59_D_20200719": "110019000230"
+    },
+    "debug": {
+        "cheat": true
+    }
+}
