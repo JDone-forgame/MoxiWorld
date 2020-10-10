@@ -10,6 +10,7 @@ class web {
     @RPCHandle.init()
     init() {
 
+        // 读取 config.json 配置表
         if (ConfigMgr.get("host") && ConfigMgr.get("Swagger")) {
             try {
                 WebRouteModule.openSwagger({ basedir: join(__dirname, '..'), ext: ".js", routePath: "web", title: "摩西世界", host: ConfigMgr.get("host") })
@@ -18,5 +19,12 @@ class web {
 
             }
         }
+
+        // 对称加密
+        require("../adapter")
+        WebRouteModule.openCross();
+        return WebRouteModule.init(ConfigMgr.get("web"), join(__dirname, '..', 'web'), function () {
+            return ConfigMgr.get("channel") || ""
+        })
     }
 }
