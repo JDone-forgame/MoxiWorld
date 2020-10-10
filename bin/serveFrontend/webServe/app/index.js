@@ -14,14 +14,15 @@ const mx_rpc_1 = require("mx-rpc");
 exports.name = "webServe";
 let web = class web {
     init() {
+        // 读取 config.json 配置表
         if (mx_tool_1.ConfigMgr.get("host") && mx_tool_1.ConfigMgr.get("Swagger")) {
             try {
-                mx_webserve_1.WebRouteModule.openSwagger({ basedir: path_1.join(__dirname, '..'), ext: ".js", routePath: "web", title: "三消", host: mx_tool_1.ConfigMgr.get("host") });
+                mx_webserve_1.WebRouteModule.openSwagger({ basedir: path_1.join(__dirname, '..'), ext: ".js", routePath: "web", title: "摩西世界", host: mx_tool_1.ConfigMgr.get("host") });
             }
             catch (e) {
             }
         }
-        //ConfigMgr.get("platform")
+        // 对称加密
         require("../adapter");
         mx_webserve_1.WebRouteModule.openCross();
         return mx_webserve_1.WebRouteModule.init(mx_tool_1.ConfigMgr.get("web"), path_1.join(__dirname, '..', 'web'), function () {
