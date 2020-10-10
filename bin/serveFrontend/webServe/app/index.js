@@ -16,17 +16,11 @@ let web = class web {
     init() {
         if (mx_tool_1.ConfigMgr.get("host") && mx_tool_1.ConfigMgr.get("Swagger")) {
             try {
-                mx_webserve_1.WebRouteModule.openSwagger({ basedir: path_1.join(__dirname, '..'), ext: ".js", routePath: "web", title: "三消", host: mx_tool_1.ConfigMgr.get("host") });
+                mx_webserve_1.WebRouteModule.openSwagger({ basedir: path_1.join(__dirname, '..'), ext: ".js", routePath: "web", title: "摩西世界", host: mx_tool_1.ConfigMgr.get("host") });
             }
             catch (e) {
             }
         }
-        //ConfigMgr.get("platform")
-        require("../adapter");
-        mx_webserve_1.WebRouteModule.openCross();
-        return mx_webserve_1.WebRouteModule.init(mx_tool_1.ConfigMgr.get("web"), path_1.join(__dirname, '..', 'web'), function () {
-            return mx_tool_1.ConfigMgr.get("channel") || "";
-        });
     }
 };
 __decorate([

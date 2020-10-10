@@ -6,18 +6,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mx_rpc_1 = require("mx-rpc");
-const gamerole_1 = require("./gamerole");
-let game = class game {
-    init() {
-        gamerole_1.GameRoleService.init();
-        return true;
-    }
+const mx_webserve_1 = require("mx-webserve");
+let server = class server {
 };
-__decorate([
-    mx_rpc_1.RPCHandle.init()
-], game.prototype, "init", null);
-game = __decorate([
-    mx_rpc_1.RPCHandle.class('game', module)
-], game);
-//# sourceMappingURL=index.js.map
+server = __decorate([
+    mx_webserve_1.WebRouteModule.class(module)
+], server);
+//# sourceMappingURL=server.js.map

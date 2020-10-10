@@ -12,18 +12,11 @@ class web {
 
         if (ConfigMgr.get("host") && ConfigMgr.get("Swagger")) {
             try {
-                WebRouteModule.openSwagger({ basedir: join(__dirname, '..'), ext: ".js", routePath: "web", title: "三消", host: ConfigMgr.get("host") })
+                WebRouteModule.openSwagger({ basedir: join(__dirname, '..'), ext: ".js", routePath: "web", title: "摩西世界", host: ConfigMgr.get("host") })
             }
             catch (e) {
 
             }
         }
-
-        //ConfigMgr.get("platform")
-        require("../adapter")
-        WebRouteModule.openCross();
-        return WebRouteModule.init(ConfigMgr.get("web"), join(__dirname, '..', 'web'), function () {
-            return ConfigMgr.get("channel") || ""
-        })
     }
 }
