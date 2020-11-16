@@ -15,10 +15,7 @@ export class RequestRPC extends RPCRequest {
             queryList.push(data[arryList[i]])
         }
 
-        if(method == "request"){
-            return this.Call(data[balanceKey]||"",route,...queryList)
-        }
-        else if(method == "broadcast"){
+        if(method == "broadcast"){
             this.CallBroadcast(false,route,...queryList);
             return Promise.resolve();
         }
@@ -26,7 +23,7 @@ export class RequestRPC extends RPCRequest {
             this.CallBroadcast(true,route,...queryList);
             return Promise.resolve();
         }else{
-             throw {code:-1,errMsg:"unknow method:"+method}
+             return this.Call(data[balanceKey]||"",route,...queryList)
         }
         
     }

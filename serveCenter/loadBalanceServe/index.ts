@@ -1,5 +1,4 @@
-import { RPCCenter } from "mx-rpc";
-import { RPCNetServer } from "mx-rpc";
+import { RPCCenter, RPCNetServer } from "mx-rpc";
 
 // 中心路由负责接收数据然后分发数据
 class CenterServe extends RPCCenter {
@@ -7,7 +6,7 @@ class CenterServe extends RPCCenter {
         super(srv)
     }
 
-    protected centerDispatch(pool: string[], reqid: string) {
+    protected dispatch=function(pool: string[], reqid: string) {
         // 这里解析请求的reqid来处理
         if (pool.length == 1) {
             return pool[0]

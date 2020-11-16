@@ -4,7 +4,7 @@
   "description": "摩西世界",
   "main": "index.ts",
   "scripts": {
-    "生成RPC": "npx mx-rpc-creator -t nodesocket -o ./rpcs/ -d ../defines/ ./serveBackend ./serveFrontend/webServe/app"
+    "makeRPC": "npx mx-rpc-creator -t nodesocket -o ./rpcs/ -d ../defines/ ./serveBackend ./serveFrontend/webServe/app"
   },
   "repository": {
     "type": "git",

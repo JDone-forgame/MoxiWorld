@@ -6,7 +6,7 @@ import { parse, join } from "path";
 import { InitMoudle, ConfigMgr } from "mx-tool";
 import { CacheMoudle } from "mx-database";
 import { TableMgr } from "../lib/TableMgr";
-import { LoggerInstance } from "../lib/logger";
+import { LoggerMoudle } from "../lib/logger";
 
 process.on("uncaughtException", function (err) {
     console.error("uncaughtException", err)
@@ -20,7 +20,7 @@ process.on("unhandledRejection", function (reason) {
 
 let startJson = process.argv[2];
 if (startJson == undefined) {
-    console.log(">>>需要启动配置文件！")
+    console.log("need argement with startJson!")
     process.exit(1)
 }
 try {
@@ -36,13 +36,18 @@ try {
         frontend?: string[]
     } = JSON.parse(readFileSync(startJson).toString())
 
-    // 初始化日志模块
+    // 初始化缓存模块
     InitMoudle.regist(CacheMoudle, CacheMoudle.init)
+
+    // 初始化表格数据
     InitMoudle.regist(TableMgr.inst, TableMgr.inst.init)
+
+    // 初始化日志模块
     if (jsonData.logger) {
-        InitMoudle.regist(LoggerInstance, LoggerInstance.init, ConfigMgr.get("logMgr.platform") || [], ConfigMgr.get("logMgr") || {})
+        InitMoudle.regist(LoggerMoudle, LoggerMoudle.init, ConfigMgr.get("logMgr.platform") || [], ConfigMgr.get("logMgr") || {})
     }
 
+    // 初始化数据库模块
     if (jsonData.db) {
         InitMoudle.regist(MongodbMoudle, MongodbMoudle.init, ConfigMgr.get("db.url") || [{ host: ConfigMgr.get("db.host"), port: ConfigMgr.get("db.port") }])
     }
@@ -75,7 +80,7 @@ try {
             try {
                 if (loadSet.has(modName)) continue;
 
-                console.log(">>>rpc init", modName)
+                console.log("rpc init", modName)
                 let rpcmod = require(modName)
                 loadSet.add(modName)
                 if (rpcmod.default) {
@@ -96,7 +101,7 @@ try {
     if (jsonData.backend) {
         for (let i = 0; i < jsonData.backend.length; i++) {
             let fpath = join(__dirname, "..", "serveBackend", jsonData.backend[i])
-            console.log(">>>后端已创建：", jsonData.backend[i])
+            console.log("backend create", jsonData.backend[i])
             modulePools.push(require(fpath))
         }
     }
@@ -105,7 +110,7 @@ try {
     if (jsonData.frontend) {
         for (let i = 0; i < jsonData.frontend.length; i++) {
             let fpath = join(__dirname, "..", "serveFrontend", jsonData.frontend[i])
-            console.log(">>>前端已创建：", jsonData.frontend[i])
+            console.log("frontend create", jsonData.frontend[i])
             modulePools.push(require(fpath))
         }
     }
@@ -124,7 +129,7 @@ try {
     }
 
     InitMoudle.startApp().then(function () {
-        console.log(">>>app:", startJson, "启动成功！")
+        console.log("app:", startJson, "start success!")
     })
 }
 catch (e) {

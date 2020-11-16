@@ -18,17 +18,20 @@ process.on("unhandledRejection", function (reason) {
 // 启动器通过解析配置文件来启动
 let startJson = process.argv[2];
 if (startJson == undefined) {
-    console.log(">>>需要启动配置文件！");
+    console.log("need argement with startJson!");
     process.exit(1);
 }
 try {
     let jsonData = JSON.parse(fs_1.readFileSync(startJson).toString());
-    // 初始化日志模块
+    // 初始化缓存模块
     mx_tool_1.InitMoudle.regist(mx_database_2.CacheMoudle, mx_database_2.CacheMoudle.init);
+    // 初始化表格数据
     mx_tool_1.InitMoudle.regist(TableMgr_1.TableMgr.inst, TableMgr_1.TableMgr.inst.init);
+    // 初始化日志模块
     if (jsonData.logger) {
-        mx_tool_1.InitMoudle.regist(logger_1.LoggerInstance, logger_1.LoggerInstance.init, mx_tool_1.ConfigMgr.get("logMgr.platform") || [], mx_tool_1.ConfigMgr.get("logMgr") || {});
+        mx_tool_1.InitMoudle.regist(logger_1.LoggerMoudle, logger_1.LoggerMoudle.init, mx_tool_1.ConfigMgr.get("logMgr.platform") || [], mx_tool_1.ConfigMgr.get("logMgr") || {});
     }
+    // 初始化数据库模块
     if (jsonData.db) {
         mx_tool_1.InitMoudle.regist(mx_database_1.MongodbMoudle, mx_database_1.MongodbMoudle.init, mx_tool_1.ConfigMgr.get("db.url") || [{ host: mx_tool_1.ConfigMgr.get("db.host"), port: mx_tool_1.ConfigMgr.get("db.port") }]);
     }
@@ -56,7 +59,7 @@ try {
             try {
                 if (loadSet.has(modName))
                     continue;
-                console.log(">>>rpc init", modName);
+                console.log("rpc init", modName);
                 let rpcmod = require(modName);
                 loadSet.add(modName);
                 if (rpcmod.default) {
@@ -76,7 +79,7 @@ try {
     if (jsonData.backend) {
         for (let i = 0; i < jsonData.backend.length; i++) {
             let fpath = path_1.join(__dirname, "..", "serveBackend", jsonData.backend[i]);
-            console.log(">>>后端已创建：", jsonData.backend[i]);
+            console.log("backend create", jsonData.backend[i]);
             modulePools.push(require(fpath));
         }
     }
@@ -84,7 +87,7 @@ try {
     if (jsonData.frontend) {
         for (let i = 0; i < jsonData.frontend.length; i++) {
             let fpath = path_1.join(__dirname, "..", "serveFrontend", jsonData.frontend[i]);
-            console.log(">>>前端已创建：", jsonData.frontend[i]);
+            console.log("frontend create", jsonData.frontend[i]);
             modulePools.push(require(fpath));
         }
     }
@@ -100,7 +103,7 @@ try {
         client.conn.disconnect();
     }
     mx_tool_1.InitMoudle.startApp().then(function () {
-        console.log(">>>app:", startJson, "启动成功！");
+        console.log("app:", startJson, "start success!");
     });
 }
 catch (e) {

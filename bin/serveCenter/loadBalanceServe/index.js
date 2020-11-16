@@ -5,24 +5,24 @@ const mx_rpc_1 = require("mx-rpc");
 class CenterServe extends mx_rpc_1.RPCCenter {
     constructor(srv) {
         super(srv);
-    }
-    centerDispatch(pool, reqid) {
-        // 这里解析请求的reqid来处理
-        if (pool.length == 1) {
-            return pool[0];
-        }
-        let mq = reqid.split('.')[0];
-        if (!mq) {
-            let idx = Math.floor(Math.random() * pool.length);
-            return pool[idx];
-        }
-        else {
-            let rand = 0;
-            for (let i = 0; i < mq.length; i++) {
-                rand += mq.charCodeAt(i);
+        this.dispatch = function (pool, reqid) {
+            // 这里解析请求的reqid来处理
+            if (pool.length == 1) {
+                return pool[0];
             }
-            return pool[rand % pool.length];
-        }
+            let mq = reqid.split('.')[0];
+            if (!mq) {
+                let idx = Math.floor(Math.random() * pool.length);
+                return pool[idx];
+            }
+            else {
+                let rand = 0;
+                for (let i = 0; i < mq.length; i++) {
+                    rand += mq.charCodeAt(i);
+                }
+                return pool[rand % pool.length];
+            }
+        };
     }
 }
 function default_1(srv) {

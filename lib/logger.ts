@@ -7,55 +7,94 @@ class Logger extends LM<string> {
         super()
     }
 
+    /**-----------------------------------------生成日志------------------------------------------------------ */
 
-    weeklyScoreLog(gameID: string, pltID: string, score: number, iadd: number, activeid: string) {
-        let log = {
-            sgameID: gameID,
-            stype: "add",
-            iscore: score,
-            iadd: iadd,
-            sactiveid: activeid,
-            record_time: LocalDate.now()
+    private createlog(arrayList: Array<string> = [], outParam: { [key: string]: string | number } = {}): Object {
+        // 有几个是必须要有的添加一下
+        let needslist: string[] = ['record_time'];
+        for (let i = 0; i < needslist.length; i++) {
+            if (arrayList.indexOf(needslist[i]) < 0) {
+                arrayList.push(needslist[i]);
+            }
         }
 
-        this.logEvent(pltID, "weeklyScore", log)
+        // 生成日志的通用接口
+        let outLog: { [key: string]: number | string } = {}
+
+        let extList: string[] = [];
+
+        for (let key in arrayList) {
+            let sKey = arrayList[key];
+            switch (sKey) {
+                case 'platId': outLog[sKey] = ConfigMgr.get('id') || ''; break;
+                case 'record_time': outLog[sKey] = LocalDate.formateString(); break;
+                default:
+                    if (outParam.hasOwnProperty(sKey)) {
+                        outLog[sKey] = outParam[sKey];
+                    }
+                    else {
+                        extList.push(sKey);
+                    }
+                    break;
+            }
+        }
+
+        return outLog;
     }
 
-    energyLog(gameID: string, pltID: string, score: number, activeid: string) {
-        let log = {
-            sgameID: gameID,
-            stype: "set",
-            iscore: score,
-            sactiveid: activeid,
-            record_time: LocalDate.now()
-        }
+    /**-----------------------------------------角色注册日志-------------------------------------------------- */
 
-        this.logEvent(pltID, "energy", log)
+    public roleRegist(gameId: string, uid: string, activeid: string, inviteid: string) {
+        let outList = [
+            'sUid',
+            'sActiveid',
+            'sInviteid'
+        ];
+        let outParam = {
+            'sUid': (uid || "").toString(),
+            "sActiveid": (activeid || "").toString(),
+            'sInviteid': (inviteid || "").toString()
+        }
+        this.logEvent(gameId, 'roleRegist', this.createlog(outList, outParam));
     }
 
-    weeklyAwardLog(gameID: string, pltID: string, stype: string, sitemid: string, activeid: string) {
-        let log = {
-            sgameID: gameID,
-            stype: stype,
-            sitemid: sitemid,
-            sactiveid: activeid,
-            record_time: LocalDate.now()
-        }
+    /**-----------------------------------------角色登录日志-------------------------------------------------- */
 
-        this.logEvent(pltID, "weeklyAward", log)
+    public roleLogin(gameId: string, uid: string, activeid: string, inviteid: string) {
+        let outList = [
+            'sUid',
+            'sActiveid',
+            'sInviteid'
+        ];
+        let outParam = {
+            'sUid': (uid || "").toString(),
+            "sActiveid": (activeid || "").toString(),
+            'sInviteid': (inviteid || "").toString()
+        }
+        
+        this.logEvent(gameId, 'roleLogin', this.createlog(outList, outParam));
     }
 
-    finalAwardLog(gameID: string, pltID: string, score: number, activeid: string) {
-        let log = {
-            sgameID: gameID,
-            stype: "add",
-            iscore: score,
-            sactiveid: activeid,
-            record_time: LocalDate.now()
-        }
+    /**-----------------------------------------增加平台物品日志----------------------------------------------- */
 
-        this.logEvent(pltID, "energy", log)
+    public addPlatformItem(gameId: string, itemid: string, count: number, uid: string, activeid: string, result: number) {
+        let outList = [
+            'sItemid',
+            'iCount',
+            'sUid',
+            'sActiveid',
+            'iResult'
+        ];
+        let outParam = {
+            'sItemid': (itemid || "").toString(),
+            'iCount': count || 0,
+            'sUid': (uid || "").toString(),
+            'sActiveid': activeid,
+            'iResult': result
+        }
+        
+        this.logEvent(gameId, 'addPlatformItem', this.createlog(outList, outParam));
     }
 }
 
-export var LoggerInstance = new Logger()
+export var LoggerMoudle = new Logger()

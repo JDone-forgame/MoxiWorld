@@ -15,10 +15,7 @@ class RequestRPC extends mx_rpc_1.RPCRequest {
         for (let i = 0; i < arryList.length; i++) {
             queryList.push(data[arryList[i]]);
         }
-        if (method == "request") {
-            return this.Call(data[balanceKey] || "", route, ...queryList);
-        }
-        else if (method == "broadcast") {
+        if (method == "broadcast") {
             this.CallBroadcast(false, route, ...queryList);
             return Promise.resolve();
         }
@@ -27,7 +24,7 @@ class RequestRPC extends mx_rpc_1.RPCRequest {
             return Promise.resolve();
         }
         else {
-            throw { code: -1, errMsg: "unknow method:" + method };
+            return this.Call(data[balanceKey] || "", route, ...queryList);
         }
     }
 }
